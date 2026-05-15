@@ -1,2 +1,0 @@
-- conectar claude con github
-- crear y conectar pantalla de sign up

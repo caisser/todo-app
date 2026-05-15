@@ -52,7 +52,7 @@ export default function LoginPage() {
       </div>
 
       {/* Login card */}
-      <div className="w-full max-w-[400px] rounded-lg bg-brand-surface-container-lowest p-lg shadow-none transition-shadow hover:shadow-[0px_10px_30px_rgba(0,0,0,0.04)]">
+      <div className="w-full max-w-100 rounded-lg bg-brand-surface-container-lowest p-lg shadow-none transition-shadow hover:shadow-[0px_10px_30px_rgba(0,0,0,0.04)]">
         <form onSubmit={handleSubmit} noValidate>
           <TextField
             label="Email"
@@ -99,7 +99,7 @@ export default function LoginPage() {
       {/* Decorative background — presentational only */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed bottom-0 left-0 right-0 h-72 bg-gradient-to-t from-brand-surface-container to-transparent opacity-20 blur-3xl"
+        className="pointer-events-none fixed bottom-0 left-0 right-0 h-72 bg-linear-to-t from-brand-surface-container to-transparent opacity-20 blur-3xl"
       />
     </main>
   );

@@ -26,7 +26,7 @@ export function TextField({ label, labelAction, error, className = '', ...props 
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className={`w-full border-0 border-b border-brand-outline-variant bg-transparent py-sm font-body-md text-brand-on-surface placeholder:text-brand-secondary outline-none transition-colors focus:border-brand-primary ${error ? 'border-brand-error' : ''} ${className}`}
+        className={`w-full border-0 border-b border-brand-outline-variant bg-transparent py-sm font-body-md text-brand-on-surface placeholder:text-brand-secondary outline-none transition-colors focus:border-brand-on-surface ${error ? 'border-brand-error' : ''} ${className}`}
         {...props}
       />
       {error && (
