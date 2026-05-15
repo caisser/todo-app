@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Lucho To-Do App** is a minimalist task management app currently in the **design phase**. There is no application code yet — the workflow centers on using [Stitch](https://stitch.withgoogle.com) (via MCP) to generate screens, guided by a semantic design system.
+**Lucho To-Do App** is a minimalist task management app. The project is transitioning from design into development — Stitch-generated screens guide the UI, and implementation is tracked via OpenSpec change artifacts in `openspec/`.
 
 **Stitch Project ID:** `17862287041839336738`
 
@@ -95,7 +95,7 @@ pnpm format     # Biome auto-format (writes files)
 - **Linter/Formatter:** Biome (not ESLint/Prettier) — 2-space indent, single quotes, trailing commas
 - **Package manager:** pnpm only
 
-**Planned dependencies (not yet installed):** TanStack Query (client fetching), Supabase (Postgres, Auth, Storage), Zustand (cross-component state). The sections below describe the intended patterns once these are added.
+**Installed:** TanStack Query (`@tanstack/react-query` v5), Zustand v5. **Planned (not yet installed):** Supabase (`@supabase/ssr`) for Postgres, Auth, and Storage.
 
 ### Folder Conventions
 

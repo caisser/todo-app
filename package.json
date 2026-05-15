@@ -10,9 +10,11 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.100.10",
     "next": "16.2.6",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
