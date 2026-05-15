@@ -1,0 +1,4 @@
+- review de claude
+- conectar claude con github
+- eliminar pantalla default de next
+- crear y conectar pantalla de sign up
