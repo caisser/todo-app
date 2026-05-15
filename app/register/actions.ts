@@ -10,6 +10,7 @@ export type RegisterState = {
     password?: string;
     global?: string;
   };
+  info?: string;
 };
 
 export async function registerUser(_prevState: RegisterState, formData: FormData): Promise<RegisterState> {
@@ -27,23 +28,31 @@ export async function registerUser(_prevState: RegisterState, formData: FormData
     errors.email = 'Ingresa un correo válido';
   }
 
-  if (!password) errors.password = 'La contraseña es obligatoria';
+  if (!password) {
+    errors.password = 'La contraseña es obligatoria';
+  } else if (password.length < 6) {
+    errors.password = 'La contraseña debe tener al menos 6 caracteres';
+  }
 
   if (Object.keys(errors).length > 0) return { errors };
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: { data: { full_name: fullName } },
   });
 
   if (error) {
-    const msg = error.message.toLowerCase();
-    if (msg.includes('already registered') || msg.includes('user already exists')) {
+    const isExisting = (error as { code?: string }).code === 'user_already_exists' || error.status === 422;
+    if (isExisting) {
       return { errors: { global: 'Este correo ya está registrado.' } };
     }
     return { errors: { global: error.message } };
+  }
+
+  if (!data.session) {
+    return { info: 'Revisa tu correo para confirmar tu cuenta.' };
   }
 
   redirect('/');

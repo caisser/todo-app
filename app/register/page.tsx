@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useActionState } from 'react';
 import { TextField } from '@/components/ui/TextField';
 import { type RegisterState, registerUser } from './actions';
@@ -61,12 +62,12 @@ export default function RegisterPage() {
             {state.errors?.global && (
               <div className="mt-md">
                 <p className="font-body-md text-brand-error">{state.errors.global}</p>
-                <a
-                  href="/login"
-                  className="font-body-md text-brand-primary underline underline-offset-4 decoration-1 hover:opacity-70 transition-opacity"
-                >
-                  Iniciar sesión
-                </a>
+              </div>
+            )}
+
+            {state.info && (
+              <div className="mt-md">
+                <p className="font-body-md text-brand-on-surface-variant">{state.info}</p>
               </div>
             )}
 
@@ -87,12 +88,12 @@ export default function RegisterPage() {
         {/* Sign-in link */}
         <div className="p-lg md:p-xl text-center">
           <p className="font-body-md text-brand-on-surface-variant">¿Ya tienes una cuenta?</p>
-          <a
+          <Link
             href="/login"
             className="font-headline-sm font-medium text-brand-primary transition-opacity hover:underline hover:underline-offset-4 hover:decoration-1"
           >
             Iniciar sesión
-          </a>
+          </Link>
         </div>
       </div>
 
