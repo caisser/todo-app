@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inbox - Minimalist To-Do</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;family=Manrope:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#444748",
+                        "on-tertiary-fixed-variant": "#45464e",
+                        "on-secondary-fixed": "#1a1b22",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-primary-container": "#858383",
+                        "inverse-surface": "#2f3132",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1a1c1d",
+                        "on-secondary-fixed-variant": "#46464e",
+                        "background": "#f9f9fa",
+                        "primary": "#000000",
+                        "surface-container-high": "#e8e8e9",
+                        "tertiary-fixed-dim": "#c6c6cf",
+                        "inverse-on-surface": "#f0f1f2",
+                        "tertiary-fixed": "#e2e1eb",
+                        "on-background": "#1a1c1d",
+                        "secondary-container": "#e3e1ec",
+                        "on-primary-fixed-variant": "#474646",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f3f3f4",
+                        "on-secondary-container": "#63646c",
+                        "primary-container": "#1c1b1b",
+                        "outline-variant": "#c4c7c7",
+                        "outline": "#747878",
+                        "secondary-fixed-dim": "#c6c5cf",
+                        "surface-variant": "#e2e2e3",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#e3e1ec",
+                        "secondary": "#5d5e66",
+                        "surface-container": "#eeeeef",
+                        "surface-tint": "#5f5e5e",
+                        "on-tertiary-fixed": "#1a1b22",
+                        "surface-bright": "#f9f9fa",
+                        "surface-dim": "#dadadb",
+                        "tertiary": "#000000",
+                        "inverse-primary": "#c8c6c5",
+                        "surface-container-highest": "#e2e2e3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#83838c",
+                        "on-primary": "#ffffff",
+                        "surface": "#f9f9fa",
+                        "tertiary-container": "#1a1b22",
+                        "primary-fixed": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "1.5rem",
+                        "container-max": "800px",
+                        "lg": "2.5rem",
+                        "sm": "1rem",
+                        "unit": "4px",
+                        "xl": "4rem",
+                        "md": "1.5rem",
+                        "xs": "0.5rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "headline-sm": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-sm": ["18px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        /* Custom Checkbox Styles */
+        input[type="checkbox"] {
+            appearance: none;
+            background-color: transparent;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.25em;
+            height: 1.25em;
+            border: 1.5px solid theme('colors.outline');
+            border-radius: theme('borderRadius.DEFAULT');
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+        }
+        input[type="checkbox"]::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: transform;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        input[type="checkbox"]:checked {
+            background-color: theme('colors.primary');
+            border-color: theme('colors.primary');
+        }
+        input[type="checkbox"]:checked::before {
+            transform: scale(1);
+        }
+        .task-row:hover {
+            background-color: theme('colors.surface-container-low');
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+            transform: translateY(-1px);
+        }
+        .task-row {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col p-md gap-xs bg-surface-container-lowest border-r border-outline-variant h-screen w-64 fixed left-0 top-0">
+<!-- Header area within sidebar for title/subtext -->
+<div class="mb-lg px-xs">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Tasks</h1>
+<p class="font-body-md text-body-md text-secondary">Stay Focused</p>
+</div>
+<ul class="flex-grow flex flex-col gap-unit">
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-primary font-bold bg-surface-container-high rounded-lg active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inbox</span>
+<span class="font-body-md text-body-md">Inbox</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-secondary font-normal hover:bg-surface-container-low transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">today</span>
+<span class="font-body-md text-body-md">Today</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-secondary font-normal hover:bg-surface-container-low transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-body-md text-body-md">Upcoming</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-secondary font-normal hover:bg-surface-container-low transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">folder</span>
+<span class="font-body-md text-body-md">Projects</span>
+</a>
+</li>
+</ul>
+<button class="mt-auto flex items-center justify-center gap-xs px-md py-sm border border-outline-variant rounded-lg text-primary font-body-md text-body-md hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            New Project
+        </button>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow md:ml-64 relative">
+<!-- TopNavBar (Web & Mobile, though layout adjusts) -->
+<header class="bg-surface-lowest border-b border-outline-variant fixed top-0 w-full md:w-[calc(100%-16rem)] z-50">
+<div class="flex justify-between items-center px-md py-sm max-w-container-max mx-auto h-[64px]">
+<!-- Mobile Brand/Menu -->
+<div class="md:hidden flex items-center gap-sm">
+<button class="text-on-surface-variant"><span class="material-symbols-outlined">menu</span></button>
+<span class="font-headline-md text-headline-md font-bold text-primary">Minimalist To-Do</span>
+</div>
+<!-- Desktop Search (Left aligned in main area) -->
+<div class="hidden md:flex flex-grow items-center">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant pl-lg pr-sm py-xs focus:ring-0 focus:border-primary font-body-md text-body-md placeholder-outline transition-colors text-primary" placeholder="Search tasks..." type="text"/>
+</div>
+</div>
+<!-- Mobile Search Icon -->
+<div class="md:hidden flex items-center gap-sm">
+<button class="text-on-surface-variant"><span class="material-symbols-outlined">search</span></button>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-sm ml-auto">
+<button class="hidden md:flex items-center justify-center bg-primary text-on-primary px-md py-xs rounded-lg font-body-md text-body-md hover:opacity-90 active:scale-[0.98] transition-transform">
+                        Add Task
+                    </button>
+<!-- Avatar -->
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant flex-shrink-0">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional individual looking composed, bathed in soft, diffused white lighting. The background is a clean, neutral gray tone, fitting a high-end corporate minimalist aesthetic. The overall mood is calm, reliable, and sharp." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHSWwSuar_jOm4sbhHfRxSMlp1cajHn8iIUTZQxanN1iyqsyIgi_9POSC-FARPAu37DikWdYRHztwn-gBLiJZmC9SHtUQG-9Zqwe7PpgHNphve-8Bgt3AVrS0EdnzGZIzgCcopj_ECCIKZYvR5J8gpqKNc139e_7D45d5_ykjc5svIS-Hj3E3aJ6PSHmV5HtkeyOgGfCedDEEUH8YHTR9gNEl6ARH-CF8GQ4qeH6u2pPJgseStC5uh2sGl170305m8JykVB-C7WYsH"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="pt-[80px] pb-xl px-sm md:px-lg max-w-container-max mx-auto mt-lg">
+<div class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-xs">Inbox</h2>
+<p class="font-body-md text-body-md text-secondary">Your high-priority items demanding attention.</p>
+</div>
+<!-- Task List Group: High Priority -->
+<section class="mb-xl">
+<div class="flex items-center gap-xs mb-sm px-xs">
+<span class="material-symbols-outlined text-[16px] text-secondary">flag</span>
+<h3 class="font-label-caps text-label-caps text-secondary uppercase">High Priority</h3>
+</div>
+<div class="flex flex-col">
+<!-- Task Item 1 -->
+<div class="task-row flex items-start gap-sm py-sm px-xs border-b border-outline-variant bg-surface-bright rounded-sm">
+<div class="pt-1">
+<input id="task1" type="checkbox"/>
+</div>
+<div class="flex-grow">
+<label class="font-body-lg text-body-lg text-primary block cursor-pointer" for="task1">Finalize Q3 Marketing Budget</label>
+<div class="flex items-center gap-sm mt-1">
+<span class="font-body-md text-body-md text-error flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">event</span> Today</span>
+<span class="font-label-caps text-label-caps bg-surface-container-low px-2 py-1 rounded text-secondary">Marketing</span>
+</div>
+</div>
+</div>
+<!-- Task Item 2 -->
+<div class="task-row flex items-start gap-sm py-sm px-xs border-b border-outline-variant bg-surface-bright rounded-sm">
+<div class="pt-1">
+<input id="task2" type="checkbox"/>
+</div>
+<div class="flex-grow">
+<label class="font-body-lg text-body-lg text-primary block cursor-pointer" for="task2">Review Design System Updates</label>
+<div class="flex items-center gap-sm mt-1">
+<span class="font-body-md text-body-md text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">event</span> Tomorrow</span>
+<span class="font-label-caps text-label-caps bg-surface-container-low px-2 py-1 rounded text-secondary">Design</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Task List Group: General -->
+<section>
+<div class="flex items-center gap-xs mb-sm px-xs">
+<span class="material-symbols-outlined text-[16px] text-secondary">list</span>
+<h3 class="font-label-caps text-label-caps text-secondary uppercase">Other Tasks</h3>
+</div>
+<div class="flex flex-col">
+<!-- Task Item 3 -->
+<div class="task-row flex items-start gap-sm py-sm px-xs border-b border-outline-variant bg-surface-bright rounded-sm">
+<div class="pt-1">
+<input id="task3" type="checkbox"/>
+</div>
+<div class="flex-grow">
+<label class="font-body-lg text-body-lg text-primary block cursor-pointer" for="task3">Draft Engineering All-Hands Agenda</label>
+<div class="flex items-center gap-sm mt-1">
+<span class="font-body-md text-body-md text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">event</span> Oct 12</span>
+<span class="font-label-caps text-label-caps bg-surface-container-low px-2 py-1 rounded text-secondary">Engineering</span>
+</div>
+</div>
+</div>
+<!-- Task Item 4 -->
+<div class="task-row flex items-start gap-sm py-sm px-xs border-b border-outline-variant bg-surface-bright rounded-sm">
+<div class="pt-1">
+<input id="task4" type="checkbox"/>
+</div>
+<div class="flex-grow">
+<label class="font-body-lg text-body-lg text-primary block cursor-pointer" for="task4">Approve Contractor Invoices</label>
+<div class="flex items-center gap-sm mt-1">
+<span class="font-body-md text-body-md text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">event</span> Oct 15</span>
+<span class="font-label-caps text-label-caps bg-surface-container-low px-2 py-1 rounded text-secondary">Finance</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Mobile FAB (Visible only on small screens) -->
+<button class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0px_10px_30px_rgba(0,0,0,0.1)] flex items-center justify-center active:scale-[0.95] transition-transform z-50">
+<span class="material-symbols-outlined text-[24px]">add</span>
+</button>
+</main>
+</body></html>
