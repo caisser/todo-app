@@ -44,8 +44,7 @@ export async function registerUser(_prevState: RegisterState, formData: FormData
   });
 
   if (error) {
-    const isExisting = (error as { code?: string }).code === 'user_already_exists' || error.status === 422;
-    if (isExisting) {
+    if ((error as { code?: string }).code === 'user_already_exists') {
       return { errors: { global: 'Este correo ya está registrado.' } };
     }
     return { errors: { global: error.message } };
@@ -55,5 +54,5 @@ export async function registerUser(_prevState: RegisterState, formData: FormData
     return { info: 'Revisa tu correo para confirmar tu cuenta.' };
   }
 
-  redirect('/');
+  redirect('/inbox');
 }

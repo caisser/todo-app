@@ -95,7 +95,7 @@ pnpm format     # Biome auto-format (writes files)
 - **Linter/Formatter:** Biome (not ESLint/Prettier) — 2-space indent, single quotes, trailing commas
 - **Package manager:** pnpm only
 
-**Installed:** TanStack Query (`@tanstack/react-query` v5), Zustand v5. **Planned (not yet installed):** Supabase (`@supabase/ssr`) for Postgres, Auth, and Storage.
+**Installed:** TanStack Query (`@tanstack/react-query` v5), Zustand v5, Supabase (`@supabase/ssr`) for Postgres, Auth, and Storage.
 
 ### Folder Conventions
 
@@ -113,7 +113,7 @@ pnpm format     # Biome auto-format (writes files)
 
 ### Supabase
 
-- **Client:** create the Supabase browser client in `libs/supabase/client.ts` and the server client in `libs/supabase/server.ts` (using `@supabase/ssr`)
+- **Client:** both Supabase clients are implemented — `libs/supabase/client.ts` (browser) and `libs/supabase/server.ts` (server, async, cookie-based)
 - **Auth:** use Supabase Auth; session is read server-side via the server client in Server Components and Server Actions
 - **Database access:** always go through the Supabase client — never raw SQL from the app layer; keep RLS policies as the primary access-control layer
 - **Storage:** use Supabase Storage for file uploads; generate signed URLs server-side
@@ -140,6 +140,14 @@ pnpm format     # Biome auto-format (writes files)
 - Types for function arguments and return values go in the same file as the function
 - No unused variables or `console.log` left in committed code
 - Installing packages: validate security, maintenance activity, and bundle-size impact before adding
+
+### Env vars (`libs/env.ts`)
+
+All env vars are accessed through the `environment` object exported from `libs/env.ts` (uses `requireEnv()` which throws at startup if a var is missing). Never read `process.env` directly in app code.
+
+### Forms pattern
+
+Use React 19's `useActionState` + Server Actions for forms (see `app/register/` as the reference implementation). The login page (`app/login/page.tsx`) currently uses client-side-only state with a `// TODO: wire Supabase Auth` — this needs to be migrated to the same Server Action pattern.
 
 ### Error Classes (`libs/errors.ts`)
 
