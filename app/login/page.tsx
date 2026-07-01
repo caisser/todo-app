@@ -1,38 +1,14 @@
 'use client';
 
-import { type FormEvent, useState } from 'react';
+import Link from 'next/link';
+import { useActionState } from 'react';
 import { TextField } from '@/components/ui/TextField';
+import { type LoginState, login } from './actions';
 
-interface FormErrors {
-  email?: string;
-  password?: string;
-}
+const initialState: LoginState = {};
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<FormErrors>({});
-
-  function validate(): FormErrors {
-    const next: FormErrors = {};
-    if (!email.trim()) {
-      next.email = 'El correo es obligatorio';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      next.email = 'Ingresa un correo válido';
-    }
-    if (!password) {
-      next.password = 'La contraseña es obligatoria';
-    }
-    return next;
-  }
-
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    const next = validate();
-    setErrors(next);
-    if (Object.keys(next).length > 0) return;
-    // TODO: wire Supabase Auth
-  }
+  const [state, formAction, isPending] = useActionState(login, initialState);
 
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center bg-brand-background px-gutter">
@@ -53,46 +29,46 @@ export default function LoginPage() {
 
       {/* Login card */}
       <div className="w-full max-w-100 rounded-lg bg-brand-surface-container-lowest p-lg shadow-none transition-shadow hover:shadow-[0px_10px_30px_rgba(0,0,0,0.04)]">
-        <form onSubmit={handleSubmit} noValidate>
-          <TextField
-            label="Email"
-            type="email"
-            placeholder="nombre@compania.com"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={errors.email}
-          />
+        <form action={formAction} noValidate>
+          <TextField name="email" label="Email" type="email" placeholder="nombre@compania.com" autoComplete="email" />
 
           <div className="mt-md">
             <TextField
+              name="password"
               label="Contraseña"
               type="password"
               autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={errors.password}
               labelAction={
-                <a href="/forgot-password" className="font-label-caps font-medium text-brand-primary transition-opacity hover:opacity-70">
+                <Link
+                  href="/forgot-password"
+                  className="font-label-caps font-medium text-brand-primary transition-opacity hover:opacity-70"
+                >
                   ¿Olvidaste tu contraseña?
-                </a>
+                </Link>
               }
             />
           </div>
 
+          {state.error && (
+            <p role="alert" className="mt-md font-body-md text-brand-error">
+              {state.error}
+            </p>
+          )}
+
           <button
             type="submit"
-            className="mt-md w-full rounded bg-brand-primary py-sm font-body-lg font-semibold text-brand-on-primary transition-all hover:opacity-90 active:scale-[0.98]"
+            disabled={isPending}
+            className="mt-md w-full rounded bg-brand-primary py-sm font-body-lg font-semibold text-brand-on-primary transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Iniciar Sesión
+            {isPending ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
 
-          <a
+          <Link
             href="/register"
             className="mt-sm flex w-full items-center justify-center rounded border border-brand-primary py-sm font-body-lg font-semibold text-brand-primary transition-all hover:bg-brand-surface-container-low active:scale-[0.98]"
           >
             Crear cuenta
-          </a>
+          </Link>
         </form>
       </div>
 

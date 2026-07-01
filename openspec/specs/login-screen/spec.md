@@ -1,4 +1,8 @@
-## ADDED Requirements
+## Purpose
+
+Defines the `/login` screen — layout, form fields, CTAs (wired to a Supabase Server Action via `useActionState`), responsive behavior, and decorative background.
+
+## Requirements
 
 ### Requirement: Login page renders at /login route
 The system SHALL render a full-screen, navigation-free login page at the `/login` route. The page SHALL display the app branding (icon + "Tasks" heading + "MONOCHROME TASK SYSTEM" subtitle), a login card, and a decorative background image.
@@ -34,7 +38,7 @@ The system SHALL display a "¿OLVIDASTE TU CONTRASEÑA?" link on the same row as
 - **THEN** a "¿OLVIDASTE TU CONTRASEÑA?" link appears inline with the password label on the right side
 
 ### Requirement: Login card provides submit and account-creation CTAs
-The login card SHALL contain a full-width "Iniciar Sesión" submit button (black fill) and a full-width "Crear cuenta" outlined button below it.
+The login card SHALL contain a full-width "Iniciar Sesión" submit button (black fill) and a full-width "Crear cuenta" outlined button below it. The form SHALL be submitted to a Server Action that authenticates against Supabase; on success the action SHALL `redirect('/inbox')`, and on failure it SHALL return an error message that is displayed inline above the submit button. The page SHALL consume the action via React 19's `useActionState`, mirroring the pattern in `app/register/actions.ts`.
 
 #### Scenario: Submit button is present
 - **WHEN** the login card is rendered
@@ -44,9 +48,17 @@ The login card SHALL contain a full-width "Iniciar Sesión" submit button (black
 - **WHEN** the login card is rendered
 - **THEN** a full-width outlined "Crear cuenta" button is displayed below the submit button
 
-#### Scenario: Form submission is handled (stub)
-- **WHEN** a user submits the form
-- **THEN** the default browser submission is prevented and a stub handler is invoked (no redirect or error until Supabase is wired)
+#### Scenario: Successful login redirects to /inbox
+- **WHEN** a user submits the form with credentials accepted by `supabase.auth.signInWithPassword`
+- **THEN** the Server Action clears any prior error state, writes the Supabase session cookie, and issues `redirect('/inbox')`
+
+#### Scenario: Failed login surfaces an inline error
+- **WHEN** the Server Action's call to `supabase.auth.signInWithPassword` returns an error
+- **THEN** the action returns `{ error: <message> }` and the page renders that message inline above the submit button without navigating
+
+#### Scenario: Submit button reflects pending state
+- **WHEN** the form is submitting
+- **THEN** the submit button is disabled and its label reflects the pending state via the `useActionState` `pending` flag
 
 ### Requirement: Login page is responsive
 The system SHALL render the login card full-width with `px-gutter` padding on mobile (< 768px) and constrain it to `max-w-[400px]` centered on desktop (≥ 768px).

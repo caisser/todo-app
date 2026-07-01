@@ -55,5 +55,5 @@ export async function registerUser(_prevState: RegisterState, formData: FormData
     return { info: 'Revisa tu correo para confirmar tu cuenta.' };
   }
 
-  redirect('/');
+  redirect('/inbox');
 }

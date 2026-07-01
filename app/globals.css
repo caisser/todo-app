@@ -16,6 +16,7 @@
   --color-brand-on-surface-variant: #444748;
   --color-brand-outline: #747878;
   --color-brand-outline-variant: #c4c7c7;
+  --color-brand-surface-bright: #f9f9fa;
   --color-brand-error: #ba1a1a;
 
   /* Font families */
@@ -38,6 +39,9 @@
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-full: 9999px;
+
+  /* Container max-widths */
+  --container-container-max: 800px;
 }
 
 /* Composite typography utilities */
