@@ -29,7 +29,7 @@ The system SHALL allow a user to enter full name, email, and password and submit
 - **THEN** the submit button is disabled and displays a loading indicator
 
 ### Requirement: Registration form validates input
-The system SHALL validate all required fields and surface inline errors below affected fields using the `error` color token (`#ba1a1a`). Password MUST be at least 6 characters; shorter values SHALL be rejected with an inline error before the request reaches Supabase. Duplicate-account detection SHALL use `error.code` (e.g. `'user_already_exists'`) or `error.status === 422` rather than substring matching on `error.message`.
+The system SHALL validate all required fields and surface inline errors below affected fields using the `error` color token (`#ba1a1a`). Password MUST be at least 6 characters; shorter values SHALL be rejected with an inline error before the request reaches Supabase. Duplicate-account detection SHALL rely exclusively on Supabase's `error.code` (e.g. `'user_already_exists'`) and MUST NOT match on `error.status === 422`, because `422` is also returned for other validation failures such as weak-password rejections and would mask them behind the duplicate-account UX.
 
 #### Scenario: Empty fields on submit
 - **WHEN** the user submits the form with one or more empty required fields
@@ -45,8 +45,12 @@ The system SHALL validate all required fields and surface inline errors below af
 
 #### Scenario: Email already registered
 - **WHEN** the user submits the form with an email address already in use
-- **AND** Supabase returns an error with code `'user_already_exists'` or status `422`
+- **AND** Supabase returns an error with `error.code === 'user_already_exists'`
 - **THEN** an error message appears near the submit button indicating the account already exists, and a link to the sign-in page is shown
+
+#### Scenario: Weak password is not misclassified as duplicate account
+- **WHEN** Supabase returns an error with `error.status === 422` but no `error.code === 'user_already_exists'` (e.g. a weak-password rejection)
+- **THEN** the registration action does NOT display the "account already exists" message and instead surfaces the underlying error via the generic error path
 
 ### Requirement: User can navigate to the sign-in screen
 The system SHALL provide a link below the form divider that navigates to the login screen using client-side navigation (Next.js `<Link>`). No additional sign-in navigation link SHALL appear inside error state blocks.

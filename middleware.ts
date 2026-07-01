@@ -5,6 +5,14 @@ import { environment } from '@/libs/env';
 const PROTECTED_PREFIXES = ['/inbox', '/today', '/upcoming', '/projects'];
 const AUTH_PAGES = new Set(['/login', '/register']);
 
+function redirectWithCookies(request: NextRequest, path: string, response: NextResponse) {
+  const redirect = NextResponse.redirect(new URL(path, request.url));
+  for (const { name, value } of response.cookies.getAll()) {
+    redirect.cookies.set(name, value);
+  }
+  return redirect;
+}
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -34,16 +42,16 @@ export async function middleware(request: NextRequest) {
   const isAuthPage = AUTH_PAGES.has(path);
 
   if (!user && isProtected) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return redirectWithCookies(request, '/login', response);
   }
 
   if (user && isAuthPage) {
-    return NextResponse.redirect(new URL('/inbox', request.url));
+    return redirectWithCookies(request, '/inbox', response);
   }
 
   return response;
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|woff|woff2|ttf)$).*)'],
 };

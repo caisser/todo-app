@@ -18,14 +18,18 @@ The system SHALL render the Inbox screen at `/inbox` as a Server Component page 
 - **THEN** the sidebar's Inbox `NavItem` renders in its active variant with `aria-current="page"`
 
 ### Requirement: Inbox page header shows title and supporting subtitle
-The `PageHeader` SHALL display the title "Inbox" using the `text-headline-lg` token in `text-primary`, followed by the subtitle "Your high-priority items demanding attention." using `text-body-md` in `text-secondary`. The title-to-subtitle gap SHALL be `mb-xs` and the header block SHALL have `mb-lg` beneath it.
+The `PageHeader` SHALL display the title "Inbox" using the `text-headline-lg` token in `text-primary`, followed by the subtitle "Your high-priority items demanding attention." using `text-body-md` in `text-secondary`. The title-to-subtitle gap SHALL be `mb-xs` and the header block SHALL have `mb-lg` beneath it. The title MUST be rendered as `<h1>` — the shell layout does not own a page-level heading, so the Inbox page is responsible for the document's single `<h1>`.
 
 #### Scenario: Header content and spacing
 - **WHEN** the Inbox page renders
-- **THEN** the DOM contains an `<h1>` (or `<h2>` when the shell already provides an `<h1>`) with text "Inbox" and a sibling paragraph "Your high-priority items demanding attention." with the specified typography and spacing
+- **THEN** the DOM contains an `<h1>` with text "Inbox" and a sibling paragraph "Your high-priority items demanding attention." with the specified typography and spacing
+
+#### Scenario: Document has exactly one h1
+- **WHEN** the Inbox page renders inside the shell
+- **THEN** the DOM contains exactly one `<h1>` element and it is the one rendered by `PageHeader`
 
 ### Requirement: Tasks are organised into labelled groups
-The system SHALL render each task group inside a `TaskGroup` component consisting of a `GroupLabel` (icon + uppercase caption in `font-label-caps text-label-caps text-secondary`) followed by a `TaskList`. The "High Priority" label SHALL use a flag icon; the "Other Tasks" label SHALL use a bars icon.
+The system SHALL render each task group inside a `TaskGroup` component consisting of a `GroupLabel` (icon + uppercase caption in `font-label-caps text-label-caps text-secondary`) followed by a `TaskList`. The "High Priority" label SHALL use a flag icon; the "Other Tasks" label SHALL use a bars icon. Group labels SHALL be marked up as `<h2>` so the document reads `<h1>` (page title) → `<h2>` (group label).
 
 #### Scenario: High Priority group label
 - **WHEN** the High Priority group renders
@@ -37,7 +41,7 @@ The system SHALL render each task group inside a `TaskGroup` component consistin
 
 #### Scenario: Group heading hierarchy
 - **WHEN** any `TaskGroup` renders
-- **THEN** the group label is marked up as an `<h3>` so the document has h2 (page title) → h3 (group label) hierarchy
+- **THEN** the group label is marked up as an `<h2>` so the document has `<h1>` (page title) → `<h2>` (group label) hierarchy
 
 ### Requirement: Task row displays checkbox, title, due date, and project tag
 Each `TaskRow` SHALL render a `TaskCheckbox`, a `TaskTitle`, a `TaskDueDate`, and a `TaskProjectTag`, laid out as `flex items-start gap-sm py-sm px-xs border-b border-outline-variant bg-surface-bright rounded-sm`. The checkbox SHALL be associated with the title via matching `id` / `for` attributes.

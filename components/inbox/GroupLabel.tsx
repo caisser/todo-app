@@ -5,7 +5,7 @@ interface GroupLabelProps {
 
 export function GroupLabel({ icon, label }: GroupLabelProps) {
   return (
-    <h3 className="flex items-center gap-xs mb-sm px-xs font-label-caps text-brand-secondary uppercase">
+    <h2 className="flex items-center gap-xs mb-sm px-xs font-label-caps text-brand-secondary uppercase">
       <span
         aria-hidden="true"
         className="material-symbols-outlined"
@@ -14,6 +14,6 @@ export function GroupLabel({ icon, label }: GroupLabelProps) {
         {icon}
       </span>
       {label}
-    </h3>
+    </h2>
   );
 }

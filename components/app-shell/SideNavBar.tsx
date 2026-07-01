@@ -22,7 +22,7 @@ export function SideNavBar() {
           <NavItem key={item.label} href={item.href} icon={item.icon} label={item.label} />
         ))}
       </ul>
-      <div className="mt-auto flex flex-col">
+      <div className="mt-auto flex flex-col gap-xs">
         <SignOutButton />
         <NewProjectButton />
       </div>

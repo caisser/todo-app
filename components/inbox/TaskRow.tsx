@@ -12,6 +12,7 @@ interface TaskRowProps {
 }
 
 export function TaskRow({ task }: TaskRowProps) {
+  // TODO: wire mutation — this state does not persist across navigation
   const [checked, setChecked] = useState(task.completed);
   const id = useId();
 

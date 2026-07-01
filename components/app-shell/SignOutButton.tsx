@@ -25,7 +25,7 @@ function SubmitButton() {
 
 export function SignOutButton() {
   return (
-    <form action={signOut} className="mt-xs">
+    <form action={signOut}>
       <SubmitButton />
     </form>
   );

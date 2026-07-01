@@ -9,16 +9,18 @@ import { createClient } from '@/libs/supabase/server';
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const supabase = await createClient();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user;
 
   if (!user) {
     redirect('/login');
   }
 
+  const avatarUrl = user.user_metadata?.avatar_url;
   const shellUser = {
     email: user.email ?? '',
-    avatarUrl: (user.user_metadata?.avatar_url as string | undefined) ?? null,
+    avatarUrl: typeof avatarUrl === 'string' ? avatarUrl : null,
   };
 
   return (

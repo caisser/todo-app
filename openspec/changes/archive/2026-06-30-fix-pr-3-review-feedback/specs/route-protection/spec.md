@@ -1,10 +1,4 @@
-# route-protection Specification
-
-## Purpose
-
-Defines Next.js middleware that gates authenticated routes, redirects signed-in users away from auth screens, and keeps Supabase session cookies fresh on every non-static request.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Next.js middleware runs on every non-static request
 The system SHALL define a Next.js `middleware.ts` at the repository root that runs on every request path except static assets. Its matcher SHALL exclude `_next/static`, `_next/image`, `favicon.ico`, common image file extensions (`svg`, `png`, `jpg`, `jpeg`, `gif`, `webp`, `ico`), stylesheet and script chunks (`css`, `js`), and font files (`woff`, `woff2`, `ttf`).
@@ -57,10 +51,3 @@ When middleware determines the request has an authenticated user and the request
 #### Scenario: Signed-in user visits /register
 - **WHEN** a user with a valid Supabase session requests `/register`
 - **THEN** middleware redirects to `/inbox` and the redirect response carries the Supabase cookies from the initial response
-
-### Requirement: Public routes pass through unchanged
-Requests to routes that are neither under `app/(app)/` nor `/login` / `/register` SHALL continue to their route handler with `NextResponse.next()` — carrying the refreshed cookies if any.
-
-#### Scenario: Root or public route passes through
-- **WHEN** an authenticated or unauthenticated user requests a public route not covered by the protected or auth-screen rules
-- **THEN** middleware returns `NextResponse.next()` with the refreshed cookies attached
